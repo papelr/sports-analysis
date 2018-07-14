@@ -45,6 +45,9 @@ c2018 <- whip_2018c %>%
 
 whip_2018 <- rbind(a2018, b2018, c2018)
 
+# Function to do something?
+whip_2018[] <- lapply(whip_2018, function(x) type.convert(as.character(x)))
+
 
 #'###### -------------**Detritus**---------------------- ######
 
