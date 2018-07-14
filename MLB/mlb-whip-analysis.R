@@ -72,9 +72,45 @@ final_table <- final_table %>%
 
 # Narrowing down data set to players, WHIP, and year
 final_table %>% 
-  select(PLAYER, YEAR, WHIP) %>% 
+  select(PLAYER, YEAR, WHIP, TEAM) %>% 
   group_by(PLAYER) %>% 
-  filter(n_distinct(YEAR) > 10)
+  filter(n_distinct(YEAR) > 1)  # If a player has played certain # of years
+
+# Assign TEAM color hex codes, probably missing an acronym somewhere
+mlb_team_colors <- c("ARI" = "#A71930",
+                     "ATL" = "#CE1141",
+                     "BAL" = "#DF4601",
+                     "BOS" = "#BD3039",
+                     "CHC" = "#CC3433",
+                     "CWS" = "#000000",
+                     "CIN" = "#C6011F",
+                     "CLE" = "#E31937",
+                     "COL" = "#333366",
+                     "DET" = "#0C2C56",
+                     "HOU" = "#EB6E1F",
+                     "KC" = "#004687",
+                     "LAA" = "#BA0021",
+                     "LA" = "#EF3E42",
+                     "LAD" = "#EF3E42",
+                     "MIA" = "#FF6600",
+                     "FLA" = "#FF6600",
+                     "MIL" = "#B6922E",
+                     "MIN" = "#002B5C",
+                     "NYM" = "#FF5910",
+                     "NYY" = "#003087",
+                     "OAK" = "#003831",
+                     "PHI" = "#284898",
+                     "PIT" = "#FDB827",
+                     "SD" = "#002D62",
+                     "SF" = "#FD5A1E",
+                     "SEA" = "#005C5C",
+                     "STL" = "#C41E3A",
+                     "TB" = "8FBCE6",
+                     "TEX" = "#C0111F",
+                     "TOR" = "#134A8E",
+                     "WAS" = "#AB0003",
+                     "WSH" = "#AB0003",
+                     "MON" = "#AB0003")
 
 # Function to set YEAR scale to number of seasons by pitcher
 f <- function(k) {
@@ -86,12 +122,15 @@ f <- function(k) {
 final_table %>% 
   select(PLAYER, WHIP, YEAR, TEAM) %>% 
   group_by(PLAYER) %>% 
-  filter(PLAYER == "Roger Clemens") %>% 
+  filter(PLAYER == "R.A. Dickey") %>% 
   ggplot() +
   geom_col(aes(YEAR, WHIP, fill = TEAM)) +
-  scale_x_continuous(breaks = f(1))
+  scale_fill_manual(values = mlb_team_colors) +
+  scale_x_continuous(breaks = f(1)) +  # Uses the function to set year breaks
+  scale_y_continuous(breaks = f(0.25))
 
 
+#'###### -------------**Modeling**---------------------- ######
 
            
 
