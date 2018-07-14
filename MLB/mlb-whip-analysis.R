@@ -10,7 +10,7 @@
 library(tidyverse)
 library(rvest)
 
-#'###### -------------**Scrape**---------------------- ######
+#'###### -------------**Scrape Function**---------------------- ######
 
 # A function that creates a "year" parameter within the ESPN links
 espn_pitching_stats <- function(season) {
@@ -50,15 +50,51 @@ espn_pitching_stats <- function(season) {
 whip_table <- lapply(2000:2017, espn_pitching_stats)
 final_table <- do.call(rbind, whip_table)  
 
+
+#'###### -------------**Tidying Table**---------------------- ######
+
 # Adjusting column headers
 names(final_table) <- as.matrix(final_table[1, ])
 final_table <- final_table[-1, ]
 
 # Getting rid of inner headers - the RK PLAYER TEAM, etc.
 final_table <- final_table[final_table$RK != "RK", ]
-final_table[] <- lapply(final_table, function(x) type.convert(as.character(x), 
-                                                      as.is = TRUE))
+final_table[] <- lapply(
+  final_table, function(x) type.convert(as.character(x), as.is = TRUE))
 
 # Selecting specific variables
-whip_2018 <- whip_2018 %>% 
+final_table$YEAR <- final_table$`2000`
+final_table <- final_table %>% 
   select(YEAR, PLAYER, TEAM, GP, IP, SO, W, L, WAR, WHIP, ERA)
+
+
+#'###### -------------**Visualizations**---------------------- ######
+
+# Narrowing down data set to players, WHIP, and year
+final_table %>% 
+  select(PLAYER, YEAR, WHIP) %>% 
+  group_by(PLAYER) %>% 
+  filter(n_distinct(YEAR) > 10)
+
+# Function to set YEAR scale to number of seasons by pitcher
+f <- function(k) {
+  step <- k
+  function(y) seq(floor(min(y)), ceiling(max(y)), by = step)       
+}
+
+# Picking a player and looking at their WHIP, or whatever statistic
+final_table %>% 
+  select(PLAYER, WHIP, YEAR, TEAM) %>% 
+  group_by(PLAYER) %>% 
+  filter(PLAYER == "Roger Clemens") %>% 
+  ggplot() +
+  geom_col(aes(YEAR, WHIP, fill = TEAM)) +
+  scale_x_continuous(breaks = f(1))
+
+
+
+           
+
+           
+  
+  
