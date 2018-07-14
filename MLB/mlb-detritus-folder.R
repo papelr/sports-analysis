@@ -49,6 +49,18 @@ whip_2018 <- rbind(a2018, b2018, c2018)
 whip_2018[] <- lapply(whip_2018, function(x) type.convert(as.character(x)))
 
 
+df <- tibble(
+  "PLAYER" = c("Corey Kluber", "CLayton Kershaw", "Max Scherzer", "Chris Sale",
+               "Corey Kluber", "Jake Arrieta", "Jose Urena", "Yu Darvish"),
+  "YEAR" = c(2016, 2016, 2016, 2016, 2017, 2017, 2017, 2017),
+  "WHIP" = c(1.24, 1.50, 1.70, 1.35, 1.42, 1.33, 1.61, 1.10)
+)
+
+
+
+
+
+
 #'###### -------------**Detritus**---------------------- ######
 
 "http://www.espn.com/mlb/stats/pitching/_/order/false",
