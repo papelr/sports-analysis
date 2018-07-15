@@ -9,6 +9,7 @@
 
 library(tidyverse)
 library(rvest)
+library(ggrepel)
 
 #'###### -------------**Scrape Function**---------------------- ######
 
@@ -86,7 +87,7 @@ mlb_team_colors <- c("ARI" = "#A71930", "ATL" = "#CE1141", "BAL" = "#DF4601",
                      "MIN" = "#002B5C", "NYM" = "#FF5910", "NYY" = "#003087",
                      "OAK" = "#003831", "PHI" = "#284898", "PIT" = "#FDB827",
                      "SD" = "#002D62", "SF" = "#FD5A1E", "SEA" = "#005C5C",
-                     "STL" = "#C41E3A", "TB" = "8FBCE6", "TEX" = "#C0111F",
+                     "STL" = "#C41E3A", "TB" = "#8FBCE6", "TEX" = "#C0111F",
                      "TOR" = "#134A8E", "WAS" = "#AB0003", "WSH" = "#AB0003",
                      "MON" = "#AB0003")
 
@@ -104,7 +105,7 @@ final_table %>%
   ggplot() +
   geom_col(aes(YEAR, WHIP, fill = TEAM)) +
   scale_fill_manual(values = mlb_team_colors) +
-  scale_x_continuous(breaks = f(1)) +  # Uses the function to set year breaks
+  scale_x_continuous(breaks = f(1)) +  # Uses the function to set YEAR breaks
   scale_y_continuous(breaks = f(0.25))
 
 
@@ -123,8 +124,10 @@ final_table %>%
   select(YEAR, PLAYER, TEAM, GP, IP, SO, W, L, H, R, BB, ER, WAR, WHIP) %>% 
   group_by(PLAYER) %>% 
   filter(YEAR == "2017") %>% 
-  ggplot(aes(WHIP, IP)) +
-  geom_point(aes(color = PLAYER)) +
+  ggplot(aes(WHIP, ER)) +
+  geom_point(aes(color = TEAM), size = 3, shape = 18, show.legend = F) +
+  scale_color_manual(values = mlb_team_colors) +
+  geom_label_repel(aes(label = TEAM), size = 2) +
   geom_smooth(method = "lm", se = FALSE, size = 0.3, color = "black",
               weight = 0.5)
   
