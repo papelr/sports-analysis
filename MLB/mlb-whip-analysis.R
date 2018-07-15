@@ -24,7 +24,7 @@ espn_pitching_stats <- function(season) {
   whip_c <- paste0("http://www.espn.com/mlb/stats/pitching/_/year/", season, 
                    "/count/81/order/false")
   
-  # Building the data tables, ignores the 3rd if only two pages in table
+  # Building the data tables, ignores the 3rd link if only two pages in table
   a_data <- whip_a %>%
     read_html %>%
     html_node("#my-players-table > div > div.mod-content > table") %>%
@@ -103,10 +103,31 @@ final_table %>%
   group_by(PLAYER) %>% 
   filter(PLAYER == "R.A. Dickey") %>% 
   ggplot() +
-  geom_col(aes(YEAR, WHIP, fill = TEAM)) +
+  geom_col(aes(YEAR, WHIP, fill = TEAM), width = .5) +
+  # scale_x_reverse() +
   scale_fill_manual(values = mlb_team_colors) +
   scale_x_continuous(breaks = f(1)) +  # Uses the function to set YEAR breaks
-  scale_y_continuous(breaks = f(0.25))
+  scale_y_continuous(breaks = f(0.1)) +
+  theme_bw() +
+  coord_flip() +
+  labs(
+    title = "WHIP Statistic: R.A. Dickey",
+    subtitle = "An MLB Pitcher's WHIP Over Time",
+    x = "Year",
+    y = "WHIP Stat",
+    caption = "Data from espn.com, Plot by R. Papel") +
+  theme(
+    plot.title = element_text(face = "bold", size = 12),
+    plot.caption = element_text(face = "italic"),
+    plot.subtitle = element_text(face = "italic"),
+    axis.ticks = element_line(colour = "grey70", size = 0.2),
+    legend.text = element_text(face = "bold"),
+    legend.title = element_text(face = "bold"),
+    legend.background = element_rect(color = "grey70"), 
+    axis.title.y = element_text(size = 11, face = "bold", color = "black"),
+    axis.title.x = element_text(size = 11, face = "bold", color = "black")
+  ) +
+  guides(fill = guide_legend(title = "Team"))
 
 
 #'###### -------------**WHIP Modeling**---------------------- ######
