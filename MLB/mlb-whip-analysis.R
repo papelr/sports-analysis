@@ -91,7 +91,7 @@ mlb_team_colors <- c("ARI" = "#A71930", "ATL" = "#CE1141", "BAL" = "#DF4601",
                      "TOR" = "#134A8E", "WAS" = "#AB0003", "WSH" = "#AB0003",
                      "MON" = "#AB0003")
 
-# Function to set YEAR scale to number of seasons by pitcher
+# Function to set YEAR scale to number of seasons played by pitcher
 f <- function(k) {
   step <- k
   function(y) seq(floor(min(y)), ceiling(max(y)), by = step)       
@@ -112,7 +112,7 @@ final_table %>%
   coord_flip() +
   labs(
     title = "WHIP Statistic: R.A. Dickey",
-    subtitle = "An MLB Pitcher's WHIP Over Time",
+    subtitle = "WHIP over seasons played",
     x = "Year",
     y = "WHIP Stat",
     caption = "Data from espn.com, Plot by R. Papel") +
@@ -144,8 +144,14 @@ final_table %>%
 final_table %>% 
   select(YEAR, PLAYER, TEAM, GP, IP, SO, W, L, H, R, BB, ER, WAR, WHIP) %>% 
   group_by(PLAYER) %>% 
-  filter(YEAR == "2017") %>% 
-  ggplot(aes(WHIP, ER)) +
+  filter(YEAR == "2017",
+         TEAM != "TEX/LAD", # Removing trades, for graphic clean-up
+         TEAM != "CHW/CHC",
+         TEAM != "NYY/OAK",
+         TEAM != "SEA/STL",
+         TEAM != "BAL/PHI",
+         TEAM != "DET/HOU") %>% # This is Verlander, so...
+  ggplot(aes(WHIP, IP)) +
   geom_point(aes(color = TEAM), size = 3, shape = 18, show.legend = F) +
   scale_color_manual(values = mlb_team_colors) +
   geom_label_repel(aes(label = TEAM), size = 2) +
@@ -153,3 +159,7 @@ final_table %>%
               weight = 0.5)
   
   
+#'###### -------------**Function for Stat/Player**---------- ######
+
+# A function that takes the scraped dataset and returns a plot of PLAYER
+# and whatever stat is called, colored by the PLAYER's team
