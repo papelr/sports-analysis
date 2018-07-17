@@ -162,4 +162,71 @@ final_table %>%
 #'###### -------------**Function for Stat/Player**---------- ######
 
 # A function that takes the scraped dataset and returns a plot of PLAYER
-# and whatever stat is called, colored by the PLAYER's team
+# and whatever statistic is called, filled by the PLAYER's team
+
+# Function:
+baseball_stats <- function(player, statistic) {
+  
+  # Libraries
+  library(tidyverse)
+  library(rvest)
+  library(ggrepel)
+  
+  # Assign TEAM color hex codes, probably missing an acronym somewhere
+  mlb_team_colors <- c("ARI" = "#A71930", "ATL" = "#CE1141", "BAL" = "#DF4601",
+                       "BOS" = "#BD3039", "CHC" = "#CC3433", "CWS" = "#000000",
+                       "CIN" = "#C6011F", "CLE" = "#E31937", "COL" = "#333366",
+                       "DET" = "#0C2C56", "HOU" = "#EB6E1F", "KC" = "#004687",
+                       "LAA" = "#BA0021", "LA" = "#EF3E42", "LAD" = "#EF3E42",
+                       "MIA" = "#FF6600", "FLA" = "#FF6600", "MIL" = "#B6922E",
+                       "MIN" = "#002B5C", "NYM" = "#FF5910", "NYY" = "#003087",
+                       "OAK" = "#003831", "PHI" = "#284898", "PIT" = "#FDB827",
+                       "SD" = "#002D62", "SF" = "#FD5A1E", "SEA" = "#005C5C",
+                       "STL" = "#C41E3A", "TB" = "#8FBCE6", "TEX" = "#C0111F",
+                       "TOR" = "#134A8E", "WAS" = "#AB0003", "WSH" = "#AB0003",
+                       "MON" = "#AB0003")
+  
+  # Function to set YEAR scale to number of seasons played by pitcher
+  f <- function(k) {
+    step <- k
+    function(y) seq(floor(min(y)), ceiling(max(y)), by = step)
+  }
+  
+  # ggplot of player and chosen statistic
+  p <- final_table %>% 
+    group_by(PLAYER) %>% 
+    filter(PLAYER == player) %>% 
+    ggplot() +
+    geom_col(aes(YEAR, statistic, fill = TEAM), width = .5) +
+    # scale_x_reverse() +
+    scale_fill_manual(values = mlb_team_colors) +
+    scale_x_continuous(breaks = f(1)) +  # Uses the function to set YEAR breaks
+    scale_y_continuous(breaks = f(0.1)) +
+    theme_bw() +
+    coord_flip() +
+    labs(
+      title = "statistic Statistic: player",
+      subtitle = "statistic over seasons played",
+      x = "Year",
+      y = "statistic Stat",
+      caption = "Data from espn.com, Plot by R. Papel") +
+    theme(
+      plot.title = element_text(face = "bold", size = 12),
+      plot.caption = element_text(face = "italic"),
+      plot.subtitle = element_text(face = "italic"),
+      axis.ticks = element_line(colour = "grey70", size = 0.2),
+      legend.text = element_text(face = "bold"),
+      legend.title = element_text(face = "bold"),
+      legend.background = element_rect(color = "grey70"), 
+      axis.title.y = element_text(size = 11, face = "bold", color = "black"),
+      axis.title.x = element_text(size = 11, face = "bold", color = "black")
+    ) +
+    guides(fill = guide_legend(title = "Team"))
+  
+  print(p)
+  return(baseball_stats)
+ 
+}
+
+# Testing function and call
+baseball_stats("R.A. Dickey", "WHIP")
