@@ -231,12 +231,14 @@ baseball_stats("R.A. Dickey", "WHIP")
 
 
 
-
+#'###### ------------------------------------------------------- ######
 #'###### -------------**An All-Encompassing Function**---------- ######
+#'###### ------------------------------------------------------- ######
 
 # Testing to see if I can put the scrape function in the plot function,
 # which includes the table formatting before plotting... we'll see. I
 # honestly think it will be slow/cumbersome, but I want to just see...
+# Yeah, it is slow as heck.
 
 # Big Function:
 big_function <- function(pitcher, stat) {
@@ -322,19 +324,19 @@ big_function <- function(pitcher, stat) {
   # ggplot of player and chosen statistic
   p <- final_table %>% 
     group_by(PLAYER) %>% 
-    filter(PLAYER == player) %>% 
+    filter(PLAYER == pitcher) %>% 
     ggplot() +
-    geom_col(aes_string("YEAR", statistic, fill = "TEAM"), width = .5) +
+    geom_col(aes_string("YEAR", stat, fill = "TEAM"), width = .5) +
     scale_fill_manual(values = mlb_team_colors) +
     scale_x_continuous(breaks = f(1)) +  # Uses the function to set YEAR breaks
     scale_y_continuous(breaks = f(0.5)) +
     theme_bw() +
     coord_flip() +
     labs(
-      title = player,
-      subtitle = statistic,
+      title = pitcher,
+      subtitle = stat,
       x = "Year",
-      y = statistic,
+      y = stat,
       caption = "Data from espn.com, Plot by R. Papel") +
     theme(
       plot.title = element_text(face = "bold", size = 12),
@@ -348,12 +350,12 @@ big_function <- function(pitcher, stat) {
       axis.title.x = element_text(size = 11, face = "bold", color = "black")
     ) +
     guides(fill = guide_legend(title = "Team"))
-  
+
   return(p)
   
 }
   
-# Function call - ITS SO SLOW 
+# Function call - IT'S SO SLOW, but it works!
 big_function("R.A. Dickey", "WHIP")
 
 
