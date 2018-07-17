@@ -197,18 +197,17 @@ baseball_stats <- function(player, statistic) {
     group_by(PLAYER) %>% 
     filter(PLAYER == player) %>% 
     ggplot() +
-    geom_col(aes(YEAR, statistic, fill = TEAM), width = .5) +
-    # scale_x_reverse() +
+    geom_col(aes_string("YEAR", statistic, fill = "TEAM"), width = .5) +
     scale_fill_manual(values = mlb_team_colors) +
     scale_x_continuous(breaks = f(1)) +  # Uses the function to set YEAR breaks
-    scale_y_continuous(breaks = f(0.1)) +
+    scale_y_continuous(breaks = f(0.5)) +
     theme_bw() +
     coord_flip() +
     labs(
-      title = "statistic Statistic: player",
-      subtitle = "statistic over seasons played",
+      title = player,
+      subtitle = statistic,
       x = "Year",
-      y = "statistic Stat",
+      y = statistic,
       caption = "Data from espn.com, Plot by R. Papel") +
     theme(
       plot.title = element_text(face = "bold", size = 12),
@@ -223,10 +222,17 @@ baseball_stats <- function(player, statistic) {
     ) +
     guides(fill = guide_legend(title = "Team"))
   
-  print(p)
-  return(baseball_stats)
+  return(p)
  
 }
 
-# Testing function and call
+# Testing function, good for smaller numbered stats (WHIP, ERA, WAR)
 baseball_stats("R.A. Dickey", "WHIP")
+
+
+
+
+#'###### -------------**An All-Encompassing Function**---------- ######
+
+# Testing to see if I can put the scrape function in the plot function,
+# which includes the table formatting before plotting... we'll see
