@@ -77,3 +77,39 @@ df <- tibble(
 "http://www.espn.com/mlb/stats/pitching/_/year/2007/order/false",
 "http://www.espn.com/mlb/stats/pitching/_/year/2006/order/false",
 "http://www.espn.com/mlb/stats/pitching/_/year/2005/order/false"
+
+
+
+corsssss <- read.csv("corsia-csv-individual-regular.csv", header = T)
+
+
+library(tidyverse)
+library(rvest)
+library(RCurl)
+
+etf_url <- "http://innovatoretfs.com/etf/?ticker=ffty"
+
+etf_table <- etf_url %>%
+  read_html %>%
+  html_table(fill = T) %>% 
+  .[[5]]
+
+ffty_table <- etf_url %>% 
+  read_html %>% 
+  html_node("#BodyPlaceHolder_AllHoldingsGridView > tbody")
+
+
+library(RSelenium)
+library(rvest)
+
+remDr <- remoteDriver(port = 4445L, remoteServerAddr = "localhost",
+                      browserName = "chrome")
+remDr$open()
+remDr$navigate("http://innovatoretfs.com/etf/?ticker=ffty")
+remDr$executeScript("__doPostBack('ctl00$BodyPlaceHolder$ViewHoldingsLinkButton',
+                    '')", args = list())
+
+
+page <- read_html(remDr$getPageSource()[[1]])
+table <- html_table(page, fill = TRUE, header = T)
+table[[5]]
