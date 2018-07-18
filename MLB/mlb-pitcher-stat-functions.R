@@ -95,7 +95,8 @@ baseball_stats <- function(player, statistic) {
                        "STL" = "#C41E3A", "TB" = "#8FBCE6", "TEX" = "#C0111F",
                        "TOR" = "#134A8E", "WAS" = "#AB0003", "WSH" = "#AB0003",
                        "MON" = "#AB0003", "CHW" = "#000000", 
-                       "DET/HOU" = "#EB6E1F")
+                       "DET/HOU" = "#EB6E1F", "BOS/OAK" = "#BD3039",
+                       "DET/TOR" = "#134A8E", "DET/TB" = "#0C2C56")
   
   # Function to set YEAR scale to number of seasons played by pitcher
   f <- function(k) {
@@ -136,7 +137,8 @@ baseball_stats <- function(player, statistic) {
     group_by(PLAYER) %>% 
     filter(PLAYER == player) %>% 
     ggplot() +
-    geom_col(aes_string("YEAR", statistic, fill = "TEAM"), width = .5) +
+    geom_col(aes_string("YEAR", statistic, fill = "TEAM"),
+                        color = "#000000", width = .5) +
     scale_fill_manual(values = mlb_team_colors) +
     scale_x_continuous(breaks = f(1)) +  # Uses the function to set YEAR breaks
     scale_y_continuous(breaks = ticks(statistic)) +
@@ -173,4 +175,4 @@ baseball_stats <- function(player, statistic) {
 }
 
 # Calling the function
-baseball_stats("Jake Arrieta", "WAR")
+baseball_stats("Julio Teheran", "ERA ")
