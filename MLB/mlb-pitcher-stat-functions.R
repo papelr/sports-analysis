@@ -111,9 +111,24 @@ baseball_stats <- function(player, statistic) {
       step <- 0.25
     } else if (stat == "IP") {
       step <- 12
-      
-    return(f(step))
+    } else if (stat == "H") {
+      step <- 8
+    } else if (stat == "R") {
+      step <- 5
+    } else if (stat == "ER") {
+      step <- 4
+    } else if (stat == "BB") {
+      step <- 4
+    } else if (stat == "SO") {
+      step <- 12
+    } else if (stat == "W") {
+      step <- 1
+    } else if (stat == "L") {
+      step <- 1
+    } else if (stat == "WAR") {
+      step <- 1
     }
+    return(f(step))
   }
   
   # ggplot of player and chosen statistic
@@ -158,4 +173,4 @@ baseball_stats <- function(player, statistic) {
 }
 
 # Calling the function
-baseball_stats("Jake Arrieta", "IP")
+baseball_stats("Jake Arrieta", "WAR")
