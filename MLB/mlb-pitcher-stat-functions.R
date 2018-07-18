@@ -103,6 +103,19 @@ baseball_stats <- function(player, statistic) {
     function(y) seq(floor(min(y)), ceiling(max(y)), by = step)
   }
   
+  # Function to set scale 
+  ticks <- function(stat) {
+    if (stat == "WHIP") {
+      step <- 0.1
+    } else if (stat == "ERA") {
+      step <- 0.25
+    } else if (stat == "IP") {
+      step <- 12
+      
+    return(f(step))
+    }
+  }
+  
   # ggplot of player and chosen statistic
   p <- final_table %>% 
     group_by(PLAYER) %>% 
@@ -111,7 +124,7 @@ baseball_stats <- function(player, statistic) {
     geom_col(aes_string("YEAR", statistic, fill = "TEAM"), width = .5) +
     scale_fill_manual(values = mlb_team_colors) +
     scale_x_continuous(breaks = f(1)) +  # Uses the function to set YEAR breaks
-    scale_y_continuous(breaks = f(0.25)) +
+    scale_y_continuous(breaks = ticks(statistic)) +
     theme_bw() +
     coord_flip() +
     labs(
@@ -145,4 +158,4 @@ baseball_stats <- function(player, statistic) {
 }
 
 # Calling the function
-baseball_stats("Jake Arrieta", "ERA")
+baseball_stats("Jake Arrieta", "IP")
