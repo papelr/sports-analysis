@@ -17,10 +17,16 @@ espn_team_stats <- function(side, team, season) {
   # Libraries
   library(tidyverse)
   library(rvest)
-  
+
   # URL vector
-  team_url <- paste0("http://www.espn.com/mlb/team/stats/", side, "/_/name/",
-                     team, "/year/", season, "/", collapse = ",")
+  side_url <- paste0("http://www.espn.com/mlb/team/stats/", side, "/_/name/",
+                     team, "/year/", season, "/")
+  
+  # team_url <- paste0("http://www.espn.com/mlb/team/stats/", side, "/_/name/",
+  #                    team
+  #   
+  # seaseon_url <- paste0("http://www.espn.com/mlb/team/stats/", side, "/_/name/",
+  #                       team, "/year/", season, "/")
 
   # Building the data table
   team_page <- team_url %>%
@@ -32,9 +38,11 @@ espn_team_stats <- function(side, team, season) {
   team_tables <- team_page
   team_tables$Year <- c(team, season, side)
   
-  return(espn_team_stats)
+  return(team_tables)
 }
 
 # Uses the function to pull in 2000-2018 seasons
+mappppp <- Map(espn_team_stats, side_url, team_url, season_url)
+
 applying <- lapply(2000:2018, espn_team_stats)
 final_team_stats <- do.call(rbind, applying)  
