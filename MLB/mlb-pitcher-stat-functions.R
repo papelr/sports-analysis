@@ -1,5 +1,5 @@
 #' ---------
-#' Title: MLB Pitcher Statistics 
+#' Title: MLB Pitcher Statistics
 #' Subtitle: Functions for Scraping and Visualizing
 #' Date: July 2018
 #' Author: Robert Papel
@@ -165,14 +165,13 @@ baseball_stats <- function(player, statistic) {
   
   # ggsave of pitcher's stat plot
   ggsave(p, file = paste0
-         ("/Users/robertpapel/Documents/Personal_R_Stuff/sports-analysis/MLB/plots-mlb/", player, statistic, ".png"), 
+         ("/Users/robertpapel/Documents/Personal_R_Stuff/sports-analysis/MLB/plots-pitchers/", player, statistic, ".png"), 
          device = "png",
          width = 10,
          height = 7)
   
   return(p)
-  
 }
 
 # Calling the function
-baseball_stats("Julio Teheran", "ERA ")
+baseball_stats("Clayton Kershaw", "ERA")
