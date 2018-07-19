@@ -38,6 +38,7 @@ espn_team_stats <- function(side, team, season) {
   team_tables$Year <- c(team, season, side)
   
   return(team_tables)
+  
 }
 
 # Uses the function to pull in 2000-2018 seasons
