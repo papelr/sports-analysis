@@ -19,14 +19,13 @@ espn_team_stats <- function(side, team, season) {
   library(rvest)
 
   # URL vector
-  side_url <- paste0("http://www.espn.com/mlb/team/stats/", side, "/_/name/",
-                     team, "/year/", season, "/")
+  side_url <- paste0("http://www.espn.com/mlb/team/stats/", side 
   
-  # team_url <- paste0("http://www.espn.com/mlb/team/stats/", side, "/_/name/",
-  #                    team
-  #   
-  # seaseon_url <- paste0("http://www.espn.com/mlb/team/stats/", side, "/_/name/",
-  #                       team, "/year/", season, "/")
+  team_url <- paste0("http://www.espn.com/mlb/team/stats/", side, "/_/name/",
+                     team
+
+  season_url <- paste0("http://www.espn.com/mlb/team/stats/", side, "/_/name/",
+                        team, "/year/", season, "/")
 
   # Building the data table
   team_page <- team_url %>%
