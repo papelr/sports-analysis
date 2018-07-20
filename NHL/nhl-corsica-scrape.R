@@ -64,5 +64,22 @@ all_nhl_player_stats <- bind_rows(player_stats_2008, player_stats_2009,
 # Writing full player statistic table to csv
 write_csv(all_nhl_player_stats, "all-player-stats-2007-2018-corsica.csv")
 
+#'###### -------------**Clean-up**---------------------- ######
 
+# Replacing Season abbreviations with ending year of season
+all_nhl_player_stats$Season <- sub("7-8", "2008", all_nhl_player_stats$Season)
+all_nhl_player_stats$Season <- sub("8-9", "2009", all_nhl_player_stats$Season)
+all_nhl_player_stats$Season <- sub("9-10", "2010", all_nhl_player_stats$Season)
+all_nhl_player_stats$Season <- sub("10-11", "2011", all_nhl_player_stats$Season)
+all_nhl_player_stats$Season <- sub("11-12", "2012", all_nhl_player_stats$Season)
+all_nhl_player_stats$Season <- sub("13-14", "2014", all_nhl_player_stats$Season)
+all_nhl_player_stats$Season <- sub("14-15", "2015", all_nhl_player_stats$Season)
+all_nhl_player_stats$Season <- sub("15-16", "2016", all_nhl_player_stats$Season)
+all_nhl_player_stats$Season <- sub("16-17", "2017", all_nhl_player_stats$Season)
+all_nhl_player_stats$Season <- sub("17-18", "2018", all_nhl_player_stats$Season)
+
+# Name change because first vector is badly named
+all_statistics <- all_nhl_player_stats
                         
+# Writing full player statistic table to csv
+write_csv(all_statistics, "all-player-stats-2007-2018-corsica.csv")
