@@ -14,55 +14,57 @@ library(clipr)
 #'###### -------------**CSV Copy & Save**---------------------- ######
 
 # Set working directory:
-setwd("/Users/robertpapel/Documents/Personal_R_Stuff/sports-analysis/NHL")
+setwd("/Users/robertpapel/Documents/Personal_R_Stuff/sports-analysis/NHL/player-data")
 
-# From Corsica, session = regular season, report = individual, game state = 5v5,
+# From Corsica, session = regular season, report = summary, game state = 5v5,
   # show = all
 
-# 2007-2008 season:
-player_stats_2008 <- read.csv(text = clipr::read_clip())
+# Player statistics 
+player_stats_2008 <- read.csv("player-data-2008.txt")
+player_stats_2009 <- read.csv("player-data-2009.txt")
+player_stats_2010 <- read.csv("player-data-2010.txt")
+player_stats_2011 <- read.csv("player-data-2011.txt")
+player_stats_2012 <- read.csv("player-data-2012.txt")
+player_stats_2014 <- read.csv("player-data-2014.txt")
+player_stats_2015 <- read.csv("player-data-2015.txt")
+player_stats_2016 <- read.csv("player-data-2016.txt")
+player_stats_2017 <- read.csv("player-data-2017.txt")
+player_stats_2018 <- read.csv("player-data-2018.txt")
 
-# 2008-2009 season:
-player_stats_2009 <- read.csv(text = clipr::read_clip())
+# 2012-2013 season [LOCKOUT, so, shortened & ignored]
 
-# 2009-2010 season:
-player_stats_2010 <- read.csv(text = clipr::read_clip())
+# Loop to standardize column names
+for (i in 1:length()) {
+  
+ %>% 
+  rename(corsi_plus_minus = C...,
+         cf_perc = CF.,
+         rel_cf_perc = Rel.CF.,
+         g_plus_minus = G...,
+         gf_perc = GF.,
+         rel_gf_perc = Rel.GF.,
+         xg_plus_minus = xG...,
+         xgf_perc = xGF.,
+         rel_xgf_perc = Rel.xGF.,
+         ip_plus_minus = iP...,
+         ish_perc = iSh.,
+         toi_perc = TOI.,
+         toi_qual_of_team = TOI..QoT,
+         cf_qual_of_team = CF..QoT,
+         toi_qual_of_comp = TOI..QoC,
+         cf_qual_of_comp = CF..QoC)
+}
 
-# 2010-2011 season:
-player_stats_2011 <- read.csv(text = clipr::read_clip())
-
-# 2011-2012 season:
-player_stats_2012 <- read.csv(text = clipr::read_clip())
-
-# 2012-2013 season [LOCKOUT]:
-player_stats_2013 <- read.csv(text = clipr::read_clip())
-
-# 2013-2014 season:
-player_stats_2014 <- read.csv(text = clipr::read_clip())
-
-# 2014-2015 season:
-player_stats_2015 <- read.csv(text = clipr::read_clip())
-
-# 2015-2016 season:
-player_stats_2016 <- read.csv(text = clipr::read_clip())
-
-# 2016-2017 season:
-player_stats_2017 <- read.csv(text = clipr::read_clip())
-
-# 2017-2018 season:
-player_stats_2018 <- read.csv(text = clipr::read_clip())
 
 #'###### -------------**Binding**---------------------- ######
 
 # Bind all the player statistic tables
-all_nhl_player_stats <- bind_rows(player_stats_2008, player_stats_2009,
-                                  player_stats_2010, player_stats_2011,
-                                  player_stats_2012, player_stats_2014,
-                                  player_stats_2015, player_stats_2016,
-                                  player_stats_2017, player_stats_2018)
+all_player_stats <- bind_rows(player_stats_2008, player_stats_2009,
+                              player_stats_2010, player_stats_2011,
+                              player_stats_2012, player_stats_2014,
+                              player_stats_2015, player_stats_2016,
+                              player_stats_2017, player_stats_2018)
 
-# Writing full player statistic table to csv
-write_csv(all_nhl_player_stats, "all-player-stats-2007-2018-corsica.csv")
 
 #'###### -------------**Clean-up**---------------------- ######
 
@@ -78,8 +80,3 @@ all_nhl_player_stats$Season <- sub("15-16", "2016", all_nhl_player_stats$Season)
 all_nhl_player_stats$Season <- sub("16-17", "2017", all_nhl_player_stats$Season)
 all_nhl_player_stats$Season <- sub("17-18", "2018", all_nhl_player_stats$Season)
 
-# Name change because first vector is badly named
-all_statistics <- all_nhl_player_stats
-                        
-# Writing full player statistic table to csv
-write_csv(all_statistics, "all-player-stats-2007-2018-corsica.csv")
