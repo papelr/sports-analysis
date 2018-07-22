@@ -87,10 +87,11 @@ nhl_statistics <- function(player, statistic) {
   # ggplot of player and chosen statistic
   pp <- all_player_stats %>% 
     group_by(Player) %>% 
+    filter(Player == player) %>% 
     ggplot() +
-    geom_col(aes_string("Season", statistic, fill = "Team"),
+    geom_col(aes_string("Player", statistic, fill = "Team"),
              color = "#000000", width = .5) +
-    scale_fill_manual(values = nhl_hex_codes) +
+    # scale_fill_manual(values = nhl_hex_codes) +
     scale_x_continuous(breaks = f(1)) +  # Uses the function to set YEAR breaks
     # scale_y_continuous(breaks = ticks(statistic)) +
     theme_bw() +
@@ -124,5 +125,5 @@ nhl_statistics <- function(player, statistic) {
   return(pp)
 }
 
-nhl_statistics("P.K. Subban", "GP")
+nhl_statistics("PK Subban", "GP")
 
