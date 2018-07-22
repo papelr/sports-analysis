@@ -9,9 +9,8 @@
 
 library(tidyverse)
 library(readr)
-library(clipr)
 
-#'###### -------------**CSV Copy & Save**---------------------- ######
+#'###### -------------**CSV Read**---------------------- ######
 
 # Set working directory:
 setwd("/Users/robertpapel/Documents/Personal_R_Stuff/sports-analysis/NHL/player-data")
@@ -20,63 +19,61 @@ setwd("/Users/robertpapel/Documents/Personal_R_Stuff/sports-analysis/NHL/player-
   # show = all
 
 # Player statistics 
-player_stats_2008 <- read.csv("player-data-2008.txt")
-player_stats_2009 <- read.csv("player-data-2009.txt")
-player_stats_2010 <- read.csv("player-data-2010.txt")
-player_stats_2011 <- read.csv("player-data-2011.txt")
-player_stats_2012 <- read.csv("player-data-2012.txt")
-player_stats_2014 <- read.csv("player-data-2014.txt")
-player_stats_2015 <- read.csv("player-data-2015.txt")
-player_stats_2016 <- read.csv("player-data-2016.txt")
-player_stats_2017 <- read.csv("player-data-2017.txt")
-player_stats_2018 <- read.csv("player-data-2018.txt")
-
-# 2012-2013 season [LOCKOUT, so, shortened & ignored]
-
-# Loop to standardize column names
-for (i in 1:length()) {
-  
- %>% 
-  rename(corsi_plus_minus = C...,
-         cf_perc = CF.,
-         rel_cf_perc = Rel.CF.,
-         g_plus_minus = G...,
-         gf_perc = GF.,
-         rel_gf_perc = Rel.GF.,
-         xg_plus_minus = xG...,
-         xgf_perc = xGF.,
-         rel_xgf_perc = Rel.xGF.,
-         ip_plus_minus = iP...,
-         ish_perc = iSh.,
-         toi_perc = TOI.,
-         toi_qual_of_team = TOI..QoT,
-         cf_qual_of_team = CF..QoT,
-         toi_qual_of_comp = TOI..QoC,
-         cf_qual_of_comp = CF..QoC)
-}
+# 2012-2013 season not included [LOCKOUT]
+all_player_stats <- read.csv("player-data-2008-2018.txt")
 
 
-#'###### -------------**Binding**---------------------- ######
+#'###### -------------**Cleaning**---------------------- ######
 
-# Bind all the player statistic tables
-all_player_stats <- bind_rows(player_stats_2008, player_stats_2009,
-                              player_stats_2010, player_stats_2011,
-                              player_stats_2012, player_stats_2014,
-                              player_stats_2015, player_stats_2016,
-                              player_stats_2017, player_stats_2018)
+# Adjusting some column names
+all_player_stats <- 
+  all_player_stats %>% 
+  rename(Corsi_plus_minus = C...,
+         CF_Perc = CF.,
+         Rel_CF_Rerc = Rel.CF.,
+         G_plus_minus = G...,
+         GF_Perc = GF.,
+         Rel_GF_Perc = Rel.GF.,
+         xG_plus_minus = xG...,
+         xGF_Perc = xGF.,
+         Rel_xGF_Perc = Rel.xGF.,
+         iP_plus_minus = iP...,
+         iSh_Perc = iSh.,
+         TOI_Perc = TOI.,
+         TOI_Qual_of_Team = TOI..QoT,
+         CF_Qual_of_Team = CF..QoT,
+         TOI_Qual_of_Comp = TOI..QoC,
+         CF_Qual_of_Comp = CF..QoC) 
 
+all_player_stats <- 
+  all_player_stats %>% 
+  mutate(Season = recode(Season, 
+                         "7-8" = "2007-2008",
+                         "8-9" = "2008-2009",
+                         "9-10" = "2009-2010",
+                         "10-11" = "2010-2011",
+                         "11-12" = "2011-2012",
+                         "13-14" = "2013-2014",
+                         "14-15" = "2014-2015",
+                         "15-16" = "2015-2016",
+                         "16-17" = "2015-2016",
+                         "17-18" = "2017-2018"))
 
-#'###### -------------**Clean-up**---------------------- ######
+all_player_stats$Team <- gsub("\\.", "", all_player_stats$Team)
 
-# Replacing Season abbreviations with ending year of season
-all_nhl_player_stats$Season <- sub("7-8", "2008", all_nhl_player_stats$Season)
-all_nhl_player_stats$Season <- sub("8-9", "2009", all_nhl_player_stats$Season)
-all_nhl_player_stats$Season <- sub("9-10", "2010", all_nhl_player_stats$Season)
-all_nhl_player_stats$Season <- sub("10-11", "2011", all_nhl_player_stats$Season)
-all_nhl_player_stats$Season <- sub("11-12", "2012", all_nhl_player_stats$Season)
-all_nhl_player_stats$Season <- sub("13-14", "2014", all_nhl_player_stats$Season)
-all_nhl_player_stats$Season <- sub("14-15", "2015", all_nhl_player_stats$Season)
-all_nhl_player_stats$Season <- sub("15-16", "2016", all_nhl_player_stats$Season)
-all_nhl_player_stats$Season <- sub("16-17", "2017", all_nhl_player_stats$Season)
-all_nhl_player_stats$Season <- sub("17-18", "2018", all_nhl_player_stats$Season)
+# Getting rid of repeated header lines in table
+all_player_stats <- all_player_stats[all_player_stats$Player != "Player", ]
 
+# Assign NHL team color hex codes
+nhl_hex_codes <- 
+  c("ANA" = "#FC4C02", "ARI" = "#8C2633", "ATL" = "#53565A",
+    "BOS" = "#FFB81C", "BUF" = "#041E42", "CGY" = "#C8102E",
+    "CAR" = "#CC0000", "CHI" = "#C8102E", "COL" = "#6F263D",
+    "CBJ" = "#041E42", "DAL" = "#006341", "DET" = "#C8102E",
+    "EDM" = "#041E42", "FLA" = "#B9975B", "LA" = "#000000",
+    "MIN" = "#154734", "MON" = "#A6192E", "NJ" = "#C8102E",
+    "NSH" = "#FFB81C", "NYI" = "#00468B", "NYR" = "#0038A8",
+    "OTT" = "#C8102E", "PHL" = "#FA4616", "PIT" = "#CFC493",
+    "STL" = "#003087", "SJ" = "#006272", "TB" = "#00205B",
+    "TOR" = "#00205B", "VAN" = "#00843D", "VGK" = "#B9975B",
+    "WSH" = "#041E42", "WPG" = "#53565A")
