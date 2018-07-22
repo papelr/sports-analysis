@@ -1,4 +1,4 @@
-# Sports Analyses
+## Sports Analyses
 NHL & MLB analyis functions
 
 # NHL Folder
