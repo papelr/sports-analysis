@@ -4,7 +4,7 @@ A project to analyze statistics from the NHL and MLB
 ## NHL Folder
 1. Scraped data from corsica.hockey
 2. Function to pull basic statistics for NHL players from 2008-2018
-* Each plot shows a chosen statistic by player and number of years that player has been active
++ Each plot shows a chosen statistic by player and number of years that player has been active
 3. Plots saved in folder on GitHub
 
 ## MLB Folder
