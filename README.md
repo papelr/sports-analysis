@@ -1,5 +1,5 @@
 # Sports Analyses
-NHL & MLB analyis functions
+A project to analyze statistics from the NHL and MLB
 
 ## NHL Folder
 1. Scraped data from corsica.hockey
