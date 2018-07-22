@@ -46,3 +46,7 @@ mappppp <- Map(espn_team_stats, side_url, team_url, season_url)
 
 applying <- lapply(2000:2018, espn_team_stats)
 final_team_stats <- do.call(rbind, applying)  
+
+
+# Map: 
+df <- expand.grid(side=c("batting", "fielding"), team=c("team1", "team2"), season=c(2015, 2016, 2017)); mappppp <- Map(espn_team_stats, df$side, df$team, df$season)
