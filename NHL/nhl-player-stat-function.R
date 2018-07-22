@@ -79,7 +79,7 @@ nhl_statistics <- function(player, statistic) {
       "STL" = "#003087", "SJ" = "#006272", "TB" = "#00205B",
       "TOR" = "#00205B", "VAN" = "#00843D", "VGK" = "#B9975B",
       "WSH" = "#041E42", "WPG" = "#53565A", "COL/ OTT" = "#C8102E",
-      "MTL" = "#A6192E")
+      "MTL" = "#A6192E", "ARI/ OTT" = "#C8102E", "OTT/ NSH" = "#FFB81C")
   
   # Function to set YEAR scale to number of seasons played by pitcher
   f <- function(k) {
@@ -143,6 +143,6 @@ nhl_statistics <- function(player, statistic) {
 }
 
 # Employing the function
-nhl_statistics("Taylor Hall", "xGF")
+nhl_statistics("Kyle Turris", "xG_plus_minus")
 
 
