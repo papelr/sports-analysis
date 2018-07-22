@@ -45,6 +45,7 @@ all_player_stats <-
          TOI_Qual_of_Comp = TOI..QoC,
          CF_Qual_of_Comp = CF..QoC) 
 
+# Changing Season-year format
 all_player_stats <- 
   all_player_stats %>% 
   mutate(Season = recode(Season, 
@@ -77,3 +78,4 @@ nhl_hex_codes <-
     "STL" = "#003087", "SJ" = "#006272", "TB" = "#00205B",
     "TOR" = "#00205B", "VAN" = "#00843D", "VGK" = "#B9975B",
     "WSH" = "#041E42", "WPG" = "#53565A")
+
