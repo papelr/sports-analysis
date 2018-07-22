@@ -9,6 +9,7 @@
 
 library(tidyverse)
 library(readr)
+library(lubridate)
 
 #'###### -------------**CSV Read**---------------------- ######
 
@@ -49,18 +50,24 @@ all_player_stats <-
 all_player_stats <- 
   all_player_stats %>% 
   mutate(Season = recode(Season, 
-                         "7-8" = "2007-2008",
-                         "8-9" = "2008-2009",
-                         "9-10" = "2009-2010",
-                         "10-11" = "2010-2011",
-                         "11-12" = "2011-2012",
-                         "13-14" = "2013-2014",
-                         "14-15" = "2014-2015",
-                         "15-16" = "2015-2016",
-                         "16-17" = "2015-2016",
-                         "17-18" = "2017-2018"))
+                         "7-8" = "2008",
+                         "8-9" = "2009",
+                         "9-10" = "2010",
+                         "10-11" = "2011",
+                         "11-12" = "2012",
+                         "13-14" = "2014",
+                         "14-15" = "2015",
+                         "15-16" = "2016",
+                         "16-17" = "2017",
+                         "17-18" = "2018"))
 
 all_player_stats$Team <- gsub("\\.", "", all_player_stats$Team)
+
+# Converting Season column to an actual year date
+all_player_stats$Season <- as.Date(as.character(all_player_stats$Season), 
+                                   format = "%Y")
+all_player_stats$Season <- year(all_player_stats$Season)
+class(all_player_stats$Season)
 
 # Getting rid of repeated header lines in table
 all_player_stats <- all_player_stats[all_player_stats$Player != "Player", ]
@@ -79,3 +86,4 @@ nhl_hex_codes <-
     "TOR" = "#00205B", "VAN" = "#00843D", "VGK" = "#B9975B",
     "WSH" = "#041E42", "WPG" = "#53565A")
 
+class(all_player_stats$Season)
