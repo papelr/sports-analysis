@@ -104,7 +104,7 @@ baseball_stats <- function(player, statistic) {
     function(y) seq(floor(min(y)), ceiling(max(y)), by = step)
   }
   
-  # Function to set scale 
+  # Function to set scale, need to update this to a switch
   ticks <- function(stat) {
     if (stat == "WHIP") {
       step <- 0.1
