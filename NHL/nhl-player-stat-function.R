@@ -13,6 +13,7 @@ nhl_statistics <- function(player, statistic) {
   # Libraries
   library(tidyverse)
   library(readr)
+  library(lubridate)
   
   # Set working directory
   setwd("/Users/robertpapel/Documents/Personal_R_Stuff/sports-analysis/NHL/player-data")
@@ -44,20 +45,23 @@ nhl_statistics <- function(player, statistic) {
   all_player_stats <- 
     all_player_stats %>% 
     mutate(Season = recode(Season, 
-                           "7-8" = "2007-2008",
-                           "8-9" = "2008-2009",
-                           "9-10" = "2009-2010",
-                           "10-11" = "2010-2011",
-                           "11-12" = "2011-2012",
-                           "13-14" = "2013-2014",
-                           "14-15" = "2014-2015",
-                           "15-16" = "2015-2016",
-                           "16-17" = "2015-2016",
-                           "17-18" = "2017-2018")) %>% 
+                           "7-8" = "2008",
+                           "8-9" = "2009",
+                           "9-10" = "2010",
+                           "10-11" = "2011",
+                           "11-12" = "2012",
+                           "12-13" = "2013",
+                           "13-14" = "2014",
+                           "14-15" = "2015",
+                           "15-16" = "2016",
+                           "16-17" = "2017",
+                           "17-18" = "2018")) %>% 
     mutate(Player = recode(Player,
                            "P K..subban" = "PK Subban"))
   
+  # Getting rid of all periods in Team & Player
   all_player_stats$Team <- gsub("\\.", "", all_player_stats$Team)
+  all_player_stats$Player <- gsub("\\.", "", all_player_stats$Player)
   
   # Getting rid of repeated header lines in table
   all_player_stats <- all_player_stats[all_player_stats$Player != "Player", ]
@@ -74,7 +78,8 @@ nhl_statistics <- function(player, statistic) {
       "OTT" = "#C8102E", "PHL" = "#FA4616", "PIT" = "#CFC493",
       "STL" = "#003087", "SJ" = "#006272", "TB" = "#00205B",
       "TOR" = "#00205B", "VAN" = "#00843D", "VGK" = "#B9975B",
-      "WSH" = "#041E42", "WPG" = "#53565A")
+      "WSH" = "#041E42", "WPG" = "#53565A", "COL/ OTT" = "#C8102E",
+      "MTL" = "#A6192E")
   
   # Function to set YEAR scale to number of seasons played by pitcher
   f <- function(k) {
@@ -82,24 +87,36 @@ nhl_statistics <- function(player, statistic) {
     function(y) seq(floor(min(y)), ceiling(max(y)), by = step)
   }
   
-  # Statistic scale function
+  
+  # Statistic scale function with a switch, *need to build*
+  
+  # Converting Season column to an actual year date
+  all_player_stats$Season <- as.Date(as.character(all_player_stats$Season), 
+                                     format = "%Y")
+  all_player_stats$Season <- year(all_player_stats$Season)
+  class(all_player_stats$Season)
+  
+  # Adding asterisk to 2013 because it is a LOCKOUT season
+  # all_player_stats$Season <- paste0("2013", "*")
   
   # ggplot of player and chosen statistic
   pp <- all_player_stats %>% 
+    filter(Season != "2013") %>%
+    mutate(DiscreteSeason = as.factor(Season)) %>% 
     group_by(Player) %>% 
     filter(Player == player) %>% 
     ggplot() +
-    geom_col(aes_string("Player", statistic, fill = "Team"),
+    geom_col(aes_string("DiscreteSeason", statistic, fill = "Team"),
              color = "#000000", width = .5) +
-    # scale_fill_manual(values = nhl_hex_codes) +
-    scale_x_continuous(breaks = f(1)) +  # Uses the function to set YEAR breaks
+    scale_fill_manual(values = nhl_hex_codes) +
+    scale_x_discrete(breaks = waiver()) + # Uses the function to set YEAR breaks
     # scale_y_continuous(breaks = ticks(statistic)) +
     theme_bw() +
     coord_flip() +
     labs(
       title = player,
       subtitle = statistic,
-      x = "Year",
+      x = "Season",
       y = statistic,
       caption = "https://www.corsicahockey.com, by R. Papel") +
     theme(
@@ -125,5 +142,7 @@ nhl_statistics <- function(player, statistic) {
   return(pp)
 }
 
-nhl_statistics("PK Subban", "GP")
+# Employing the function
+nhl_statistics("Taylor Hall", "xGF")
+
 
