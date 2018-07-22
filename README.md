@@ -2,7 +2,7 @@
 NHL & MLB analyis functions
 
 ## NHL Folder
-1.Scraped data from corsica.hockey
+1. Scraped data from corsica.hockey
 2. Function to pull basic statistics for NHL players from 2008-2018, plots stats by season
 3. Plots saved in folder on GitHub
 
