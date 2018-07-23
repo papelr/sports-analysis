@@ -9,6 +9,8 @@
 #'###### -------------**Scrape Function**-------------------- ######
 #'###### ---------------------------------------------------- ######
 
+# [UNDER CONSTRUCTION]
+
 # Run this function before doing the vis function!
 
 # Function to scrape MLB team statistics
