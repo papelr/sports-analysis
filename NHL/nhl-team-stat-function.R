@@ -80,7 +80,8 @@ team_statistics <- function(team, statistic) {
       "STL" = "#003087", "SJ" = "#006272", "TB" = "#00205B",
       "TOR" = "#00205B", "VAN" = "#00843D", "VGK" = "#B9975B",
       "WSH" = "#041E42", "WPG" = "#53565A", "TBL" = "#00205B",
-      "SJS" = "#006272", "MTL" = "#A6192E")
+      "SJS" = "#006272", "MTL" = "#A6192E", "LAK" = "#000000",
+      "NJD" = "#C8102E", "PHI" = "#FA4616", "WAS" = "#041E42")
   
   # Statistic scale function with a switch, *need to build*
   
@@ -90,7 +91,23 @@ team_statistics <- function(team, statistic) {
   all_team_stats$Season <- year(all_team_stats$Season)
 
   # Renaming from team abbreviations to full names
-  team_names <- c("NSH" = "Nashville")
+  # team_names <- 
+  #   c("ANA" = "Anaheim Ducks",
+  #     "ARI" = "Arizona Coyotes", "BUF" = "Buffalo Sabres",
+  #     "CGY" = "Calgary Flames", "CAR" = "Carolina Hurricanes",
+  #     "CHI" = "Chicago Blackhawks", "COL" = "Colorado Avalanche",
+  #     "CBJ" = "Columbus Blue Jackets", "DAL" = "Dallas Stars",
+  #     "DET" = "Detroit Red Wings", "EDM" = "Edmonton Oilers",
+  #     "FLA" = "Florida Panthers", "LAK" = "Los Angeles Kings",
+  #     "MIN" = "Minnesota Wild", "MON" = "Montreal Canadiens", 
+  #     "NJD" = "New Jersey Devils", "NSH" = "Nashville Predators",
+  #     "NYI" = "New York Islanders",
+  #     "NYR" = "New York Rangers", "OTT" = "Ottowa Senators",
+  #     "PHI" = "Philadelphia Flyers", "PIT" = "Pittsburgh Penguins",
+  #     "STL" = "St. Louis Blues", "SJS" = "San Jose Sharks",
+  #     "TBL" = "Tampa Bay Lightning", "TOR" = "Tornona Maple Leafs",
+  #     "VAN" = "Vancouver Canucks", "VGK" = "Vegas Golden Knights",
+  #     "WSH" = "Washington Capitals", "WPG" = "Winnipeg Jets")
   
   # ggplot of player and chosen statistic
   w <- all_team_stats %>% 
@@ -107,7 +124,7 @@ team_statistics <- function(team, statistic) {
     theme_bw() +
     coord_flip() +
     labs(
-      title = team_names,
+      title = team,
       subtitle = paste0(statistic, ", regular season"),
       x = "Season",
       y = statistic,
@@ -135,4 +152,4 @@ team_statistics <- function(team, statistic) {
 }
 
 # Employing the function
-team_statistics("NSH", "xGF")
+team_statistics("WAS", "xGF")
