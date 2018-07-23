@@ -8,7 +8,7 @@
 #'###### ---------**Function for Stat & Player Plot**------- ######
 #'###### --------------------------------------------------- ######
 
-nhl_statistics <- function(player, statistic) {
+player_statistics <- function(player, statistic) {
   
   # Libraries
   library(tidyverse)
@@ -79,7 +79,8 @@ nhl_statistics <- function(player, statistic) {
       "STL" = "#003087", "SJ" = "#006272", "TB" = "#00205B",
       "TOR" = "#00205B", "VAN" = "#00843D", "VGK" = "#B9975B",
       "WSH" = "#041E42", "WPG" = "#53565A", "COL/ OTT" = "#C8102E",
-      "MTL" = "#A6192E", "ARI/ OTT" = "#C8102E", "OTT/ NSH" = "#FFB81C")
+      "MTL" = "#A6192E", "ARI/ OTT" = "#C8102E", "OTT/ NSH" = "#FFB81C",
+      "NSH/ CBJ" = "#041E42")
   
   # Function to set YEAR scale to number of seasons played by pitcher
   f <- function(k) {
@@ -115,7 +116,7 @@ nhl_statistics <- function(player, statistic) {
     coord_flip() +
     labs(
       title = player,
-      subtitle = statistic,
+      subtitle = paste0(statistic, ", regular season"),
       x = "Season",
       y = statistic,
       caption = "https://www.corsicahockey.com, by R. Papel") +
@@ -143,6 +144,7 @@ nhl_statistics <- function(player, statistic) {
 }
 
 # Employing the function
-nhl_statistics("Kyle Turris", "xG_plus_minus")
+player_statistics("Nikita Kucherov", "GP")
 
 
+# Could do a nested function where you have the player data, goalie data, WAR data, and team data, by just adding 3 more data sets. I mean make a function within the function, and add a third argument to the main function. I.e., have the function: function(player, statistic, dataset), where player can be replaced by team
