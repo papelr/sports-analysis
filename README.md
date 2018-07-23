@@ -5,6 +5,9 @@ A project to analyze statistics from the NHL and the MLB
 1. Scraped data from corsicahockey.com
 2. Function to pull basic statistics for NHL players from 2008-2018
   + Each plot shows a chosen statistic by player and number of years that player has been active
+3. Function to pull team statistics from 2008-2018
+  + Plots show the chosen statistic and team, over the full time period
+  + 2013 is left out of both player and team plots, because it was a lockout season and the NHL played 48 games total
 3. Plots saved in folder on GitHub
 
 ## MLB Folder
