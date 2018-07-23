@@ -97,9 +97,6 @@ player_statistics <- function(player, statistic) {
   all_player_stats$Season <- year(all_player_stats$Season)
   class(all_player_stats$Season)
   
-  # Adding asterisk to 2013 because it is a LOCKOUT season
-  # all_player_stats$Season <- paste0("2013", "*")
-  
   # ggplot of player and chosen statistic
   pp <- all_player_stats %>% 
     filter(Season != "2013") %>%
@@ -147,4 +144,6 @@ player_statistics <- function(player, statistic) {
 player_statistics("Nikita Kucherov", "GP")
 
 
-# Could do a nested function where you have the player data, goalie data, WAR data, and team data, by just adding 3 more data sets. I mean make a function within the function, and add a third argument to the main function. I.e., have the function: function(player, statistic, dataset), where player can be replaced by team
+
+# Future thoughts: 
+# Could do a nested function where you have the player data, goalie data, WAR data, and team data, by just adding 3 more data sets. I mean to make a function within the function, and add a third argument to the main function. I.e., have the function: function(player, statistic, dataset), where player can be replaced by team
