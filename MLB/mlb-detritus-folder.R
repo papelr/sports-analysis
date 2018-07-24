@@ -113,3 +113,17 @@ remDr$executeScript("__doPostBack('ctl00$BodyPlaceHolder$ViewHoldingsLinkButton'
 page <- read_html(remDr$getPageSource()[[1]])
 table <- html_table(page, fill = TRUE, header = T)
 table[[5]]
+
+
+
+#'###### -------------**Detritus**-------------------- ######
+
+# URL vectors (Need to put all three url vectors in dataframe)
+side_url <- paste0("http://www.espn.com/mlb/team/stats/", side,
+                   "/_/name/bal/year/")
+team_url <- paste0("http://www.espn.com/mlb/team/stats/batting/_/name/", 
+                   team,"/year/")
+season_url <- paste0("http://www.espn.com/mlb/team/stats/batting/_/name/bal/year/", year)
+
+# Creating dataframe from url link vectors
+link_frame <- data_frame(side_url, team_url, season_url)
