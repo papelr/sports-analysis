@@ -1,5 +1,5 @@
 #' ---------
-#' Title: Player Statistics
+#' Title: NHL Player Statistics
 #' Subtitle: Function to call a player & statistic, over the years
 #' Author: Robert Papel
 #' ---------
@@ -16,7 +16,7 @@ player_statistics <- function(player, statistic) {
   library(lubridate)
   
   # Set working directory
-  setwd("/Users/robertpapel/Documents/Personal_R_Stuff/sports-analysis/NHL/player-data")
+  # setwd("/Users/robertpapel/Documents/Personal_R_Stuff/sports-analysis/NHL/player-data")
   
   # Player statistics 
   all_player_stats <- read.csv("player-data-2008-2018.txt")
@@ -68,7 +68,7 @@ player_statistics <- function(player, statistic) {
   
   # Assign NHL team color hex codes
   nhl_hex_codes <- 
-    c("ANA" = "#FC4C02", "ARI" = "#8C2633", "ATL" = "#53565A",
+    c("ANA" = "#FC4C02", "ARI" = "#8C2633", "ATL" = "#000001",
       "BOS" = "#FFB81C", "BUF" = "#041E42", "CGY" = "#C8102E",
       "CAR" = "#CC0000", "CHI" = "#C8102E", "COL" = "#6F263D",
       "CBJ" = "#041E42", "DAL" = "#006341", "DET" = "#C8102E",
@@ -141,7 +141,7 @@ player_statistics <- function(player, statistic) {
 }
 
 # Employing the function
-player_statistics("Nikita Kucherov", "GP")
+player_statistics("Duncan Keith", "CF_Perc")
 
 
 
