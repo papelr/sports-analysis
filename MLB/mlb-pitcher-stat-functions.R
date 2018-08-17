@@ -174,4 +174,4 @@ baseball_stats <- function(player, statistic) {
 }
 
 # Calling the function
-baseball_stats("Clayton Kershaw", "ERA")
+baseball_stats("Rick Porcello", "ERA")
