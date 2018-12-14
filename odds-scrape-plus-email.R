@@ -129,17 +129,51 @@ full_sheet <- full_join(nhl_frame, nba_frame)
 full_sheet <- full_sheet %>% mutate(
   League = case_when(
     full_sheet$TEAM == "Arizona" ~ "NHL",
+    full_sheet$TEAM == 
+    full_sheet$TEAM == 
+    full_sheet$TEAM == 
+    full_sheet$TEAM == 
+    full_sheet$TEAM == 
+    full_sheet$TEAM == 
+    full_sheet$TEAM == 
+    full_sheet$TEAM == 
+    full_sheet$TEAM == 
+    full_sheet$TEAM == 
+    full_sheet$TEAM == 
+    full_sheet$TEAM == 
+    full_sheet$TEAM == 
+    full_sheet$TEAM == 
+    full_sheet$TEAM == 
+    full_sheet$TEAM == 
+    full_sheet$TEAM == 
+    full_sheet$TEAM == 
+    full_sheet$TEAM == 
+    full_sheet$TEAM == 
+    full_sheet$TEAM == 
+    full_sheet$TEAM == 
+    full_sheet$TEAM ==
+    full_sheet$TEAM == 
+    full_sheet$TEAM == 
+    full_sheet$TEAM == 
+    full_sheet$TEAM == 
+    full_sheet$TEAM == 
+    full_sheet$TEAM == 
+    full_sheet$TEAM == 
+    full_sheet$TEAM == 
+    full_sheet$TEAM == 
     full_sheet$TEAM == "L.A. Lakers" ~ "NBA"
   )
 )
 
 NBA_NHL_ODDS_TOTALS <- write_excel_csv(nba_nhl,'NBA_NHL_ODDS_TOTALS.csv')
+
 # Email to send out daily odds 
 gmail_email <- mime() %>%
   to(c("robertpapel@gmail.com", 
        "Jwb154@miami.edu", 
        "connor.healey@ymail.com"
-       )) %>%
+       )
+     ) %>%
   from("robertpapel@gmail.com") %>%
   subject("Test2- DAILY ODDS .csv ") %>% 
   body("These odds are from earlier today (12/13)") %>% 
