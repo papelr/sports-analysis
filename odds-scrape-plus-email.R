@@ -3,89 +3,145 @@ library(dplyr)
 library(tm)
 library(stringi)
 library(readr)
-library(mailR)
-library(rJava)
+library(gmailr)
 
-# Scraping betting lines
+# Setting time/date
 tomorrow <- Sys.Date()
-tomorrow <- gsub("-", "", tomorrow, fixed=TRUE)
-
+tomorrow <- gsub("-", "", tomorrow, fixed = TRUE)
 print(tomorrow)
 
-url <- read_html(paste0('https://classic.sportsbookreview.com/betting-odds/nhl-hockey/totals/?date=', as.character(tomorrow)))
+# Scraping NHL lines
+nhl_url <- read_html(paste0('https://classic.sportsbookreview.com/betting-odds/nhl-hockey/totals/?date=', as.character(tomorrow)))
 
-rot <- url %>%
+rot_nhl <- nhl_url %>%
   html_nodes('.eventLine-rotation .eventLine-book-value') %>%
   html_text()
 
-teams <- url %>%
+teams_nhl <- nhl_url %>%
   html_nodes('.team-name a') %>%
   html_text()
 
-total <- url %>%
-  html_nodes('.adjust')%>%
+total_nhl <- nhl_url %>%
+  html_nodes('.adjust') %>%
   html_text()
 
-opening <- url %>%
+opening_nhl <- nhl_url %>%
   html_nodes('.price') %>%
   html_text()
 
-pinnacle <- url %>%
+pinnacle_nhl <- nhl_url %>%
   html_nodes('.eventLine-book:nth-child(10) b') %>%
   html_text()
 
-dimes <- url %>%
+dimes_nhl <- nhl_url %>%
   html_nodes('.eventLine-book:nth-child(11) b') %>%
   html_text()
 
-BookMaker <- url %>%
+BookMaker_nhl <- nhl_url %>%
   html_nodes('.eventLine-book:nth-child(12) b') %>%
   html_text()
 
-BETONLINE <- url %>%
+BETONLINE_nhl <- nhl_url %>%
   html_nodes('.eventLine-book:nth-child(13) b') %>%
   html_text()
 
-BOVADA <- url %>%
+BOVADA_nhl <- nhl_url %>%
   html_nodes('.eventLine-book:nth-child(14) b') %>%
   html_text()
 
-HERITAGE <- url %>%
+HERITAGE_nhl <- nhl_url %>%
   html_nodes('.eventLine-book:nth-child(15) b') %>%
   html_text()
 
-roster <- data.frame(
-  ROT = rot, TEAM = teams, Total = total, OPENER = opening, PINNACLE = pinnacle,
-  FiveDimes = dimes, BOVADA = BOVADA, BETONLINE = BETONLINE,
-  HERITAGE = HERITAGE, BookMaker = BookMaker)
+nhl_frame <- data.frame(
+  ROT = rot_nhl, 
+  TEAM = teams_nhl, 
+  Total = total_nhl, 
+  Opener = opening_nhl, 
+  Pinnacle = pinnacle_nhl,
+  FiveDimes = dimes_nhl, 
+  Bovada = BOVADA_nhl, 
+  BetOnline = BETONLINE_nhl,
+  Heritage = HERITAGE_nhl, 
+  BookMaker = BookMaker_nhl)
 
-nhl_odds <- write_excel_csv(roster,'NHL_TOTALS_TODAY.csv')
+# Scraping NBA lines
+nba_url <- read_html(paste0('https://classic.sportsbookreview.com/betting-odds/nba-basketball/totals/?date=', as.character(tomorrow)))
 
-# Setting email to send out odds daily
-send.mail(from = "robertpapel@gmail.com",
-          to = "papel_robert@bah.com",
-          subject = "Test R automation",
-          body = "Body of the email",
-          smtp = list(host.name = "smtp.gmail.com", 
-                      port = 465, user.name = "robertpapel", 
-                      passwd = "rp37205_", ssl = TRUE),
-          authenticate = T,
-          send = TRUE)
+rot_nba <- nba_url %>%
+  html_nodes('.eventLine-rotation .eventLine-book-value') %>%
+  html_text()
 
+teams_nba <- nba_url %>%
+  html_nodes('.team-name a') %>%
+  html_text()
 
-library(gmailr)
+total_nba <- nba_url %>%
+  html_nodes('.adjust') %>%
+  html_text()
 
+opening_nba <- nba_url %>%
+  html_nodes('.price') %>%
+  html_text()
+
+pinnacle_nba <- nba_url %>%
+  html_nodes('.eventLine-book:nth-child(10) b') %>%
+  html_text()
+
+dimes_nba <- nba_url %>%
+  html_nodes('.eventLine-book:nth-child(11) b') %>%
+  html_text()
+
+BookMaker_nba <- nba_url %>%
+  html_nodes('.eventLine-book:nth-child(12) b') %>%
+  html_text()
+
+BETONLINE_nba <- nba_url %>%
+  html_nodes('.eventLine-book:nth-child(13) b') %>%
+  html_text()
+
+BOVADA_nba <- nba_url %>%
+  html_nodes('.eventLine-book:nth-child(14) b') %>%
+  html_text()
+
+HERITAGE_nba <- nba_url %>%
+  html_nodes('.eventLine-book:nth-child(15) b') %>%
+  html_text()
+
+nba_frame <- data.frame(
+  ROT = rot_nba,
+  TEAM = teams_nba, 
+  Total = total_nba, 
+  Opener = opening_nba, 
+  Pinnacle = pinnacle_nba,
+  FiveDimes = dimes_nba, 
+  Bovada = BOVADA_nba, 
+  BetOnline = BETONLINE_nba,
+  Heritage = HERITAGE_nba, 
+  BookMaker = BookMaker_nba)
+
+# Joining NHL/NBA data frames
+nba_nhl <- full_join(nhl_frame, nba_frame)
+NBA_NHL_ODDS_TOTALS <- write_excel_csv(nba_nhl,'NBA_NHL_ODDS_TOTALS.csv')
+
+# Switch for "League" column
+ticks <- function(stat) {
+  switch (stat,
+          WHIP = {step <- 0.1},
+          ERA = {step <- 0.25}
+  )
+  return(f(step))
+}
+
+# Email to send out daily odds 
 gmail_email <- mime() %>%
-  to("rdp3d@virginia.edu") %>%
+  to(c("robertpapel@gmail.com", 
+       "Jwb154@miami.edu", 
+       "connor.healey@ymail.com"
+       )) %>%
   from("robertpapel@gmail.com") %>%
-  subject("Test R Email Woot") %>% 
-  text_body("My First Email using R.") %>% 
-  attach_file("NHL_TOTALS_TODAY.csv")
-
+  subject("Test2- DAILY ODDS .csv ") %>% 
+  body("These odds are from earlier today (12/13)") %>% 
+  attach_file("NBA_NHL_ODDS_TOTALS.csv")
 send_message(gmail_email)
-
-
-
-
-
 
