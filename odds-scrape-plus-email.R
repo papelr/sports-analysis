@@ -63,7 +63,8 @@ nhl_frame <- data.frame(
   Bovada = BOVADA_nhl, 
   BetOnline = BETONLINE_nhl,
   Heritage = HERITAGE_nhl, 
-  BookMaker = BookMaker_nhl)
+  BookMaker = BookMaker_nhl
+  )
 
 # Scraping NBA lines
 nba_url <- read_html(paste0('https://classic.sportsbookreview.com/betting-odds/nba-basketball/totals/?date=', as.character(tomorrow)))
@@ -118,21 +119,21 @@ nba_frame <- data.frame(
   Bovada = BOVADA_nba, 
   BetOnline = BETONLINE_nba,
   Heritage = HERITAGE_nba, 
-  BookMaker = BookMaker_nba)
+  BookMaker = BookMaker_nba
+  )
 
 # Joining NHL/NBA data frames
-nba_nhl <- full_join(nhl_frame, nba_frame)
-NBA_NHL_ODDS_TOTALS <- write_excel_csv(nba_nhl,'NBA_NHL_ODDS_TOTALS.csv')
+full_sheet <- full_join(nhl_frame, nba_frame)
 
-# Switch for "League" column
-ticks <- function(stat) {
-  switch (stat,
-          WHIP = {step <- 0.1},
-          ERA = {step <- 0.25}
+# Adding "League" column to help delineate within table
+full_sheet <- full_sheet %>% mutate(
+  League = case_when(
+    full_sheet$TEAM == "Arizona" ~ "NHL",
+    full_sheet$TEAM == "L.A. Lakers" ~ "NBA"
   )
-  return(f(step))
-}
+)
 
+NBA_NHL_ODDS_TOTALS <- write_excel_csv(nba_nhl,'NBA_NHL_ODDS_TOTALS.csv')
 # Email to send out daily odds 
 gmail_email <- mime() %>%
   to(c("robertpapel@gmail.com", 
