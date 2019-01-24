@@ -14,7 +14,8 @@ coerced <- as.data.frame(test)
 
 coerced %>% 
   select(Player, TOI, CF.) %>% 
-  formattable()
+  formattable(align = c("l", "c", "r"),
+              list(TOI = color_tile("#71CA97", "#ff7f7f")))
 
 table1 <- coerced %>% 
   ggplot() +
