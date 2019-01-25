@@ -12,6 +12,7 @@ library(rvest)
 library(tidyverse)
 library(gmailr)
 library(formattable)
+library(plotly)
 
 ```
 
@@ -85,7 +86,8 @@ table1 <- player_df %>%
       axis.title.x = element_text(size = 11, face = "bold", color = "black")
     )
 
-print(table1)
+plotlytable <- ggplotly(table1)
+plotlytable
 
 ```
 
