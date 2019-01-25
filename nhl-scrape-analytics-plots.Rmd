@@ -1,0 +1,91 @@
+---
+title: "NHL Team/Player Stat Scrapes/Analytics"
+author: "Robert Papel"
+date: "January 24, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+## Libraries
+
+library(rvest)
+library(tidyverse)
+library(gmailr)
+library(formattable)
+
+```
+
+## Basic data scrape in chunk below, using rvest() package
+
+You'll notice that it brings in a table that does not look great:
+
+```{R - Predator Player Data}
+
+# Pred player stat table through 1/24/19
+stat_url <- 'https://www.naturalstattrick.com/playerteams.php?fromseason=20182019&thruseason=20182019&stype=2&sit=5v5&score=all&stdoi=oi&rate=n&team=NSH&pos=S&loc=B&toi=0&gpfilt=none&fd=&td=&tgp=410&lines=single'
+
+# Reading in text
+player_table <- stat_url %>% 
+  read_html() %>% 
+  html_table(fill = T, header = T) 
+
+# Print initial table
+print(player_table)
+
+```
+
+## Some easy data cleaning below
+
+I make that jumble of text into a data frame, remove some columns, and also do some text cleaning. The scrape replaced the percentage signs with periods, for whatever reason, and I sub those back in:   
+
+```{R - Player Data Cleaning}
+
+# Coercing table into data frame
+player_df <- as.data.frame(player_table)
+
+# Removing first column, just numbers players, so no need for it
+player_df <- player_df[, -1]
+
+# Select relevant columns
+player_df <- player_df[, c(1:16)]
+
+# Replace period in column names with % signs (scrape replaced them)
+names(player_df) <- gsub(".", "%", names(player_df), fixed = T)
+
+# Print data table
+print(player_df)
+
+```
+
+## Sample statistic plot
+
+Sample plot showing players and number of games played:
+
+```{R pressure, echo = TRUE}
+
+table1 <- player_df %>% 
+  ggplot() +
+  geom_col(aes(reorder(Player, GP), GP, fill = Position)) +
+  coord_flip() +
+  labs(
+      title = "Predator Player Data",
+      subtitle = "Games Played through Jan 24",
+      x = "Players",
+      y = "Games Played",
+      caption = "Sample by R. Papel") +
+    theme(
+      plot.title = element_text(face = "bold", size = 12),
+      plot.caption = element_text(face = "italic"),
+      plot.subtitle = element_text(face = "italic"),
+      axis.ticks = element_line(colour = "grey70", size = 0.2),
+      legend.text = element_text(face = "bold"),
+      legend.title = element_text(face = "bold"),
+      legend.background = element_rect(color = "grey70"), 
+      axis.title.y = element_text(size = 11, face = "bold", color = "black"),
+      axis.title.x = element_text(size = 11, face = "bold", color = "black")
+    )
+
+print(table1)
+
+```
+
