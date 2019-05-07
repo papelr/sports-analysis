@@ -1,9 +1,7 @@
-# ----
-# Title: Scraping Odds
+# Title: Scraping Odds -----
 # Subtitle: Using RSelenium
 # Date: Summer 2019
 # Author: Robert Papel
-# ----
 
 ### Libraries -----
 
@@ -23,8 +21,12 @@ remDr$navigate("https://www.bovada.lv/sports/baseball/mlb")
 all_text_raw <- remDr$findElement(using = "css", '.grouped-events , .period')
 all_text <- dates_raw$getElementText()
 
-dates <- all_text %>% 
-  
+## Separating out text -----
+dates <- str_extract_all(all_text, '[1-9]/[1-99]/[1-9][1-9]')
+times <- str_extract_all(all_text, 
+                         '((1[0-2]|0?[1-9]):([0-5][0-9]) ([AaPp][Mm]))')
+away_team <- 
+home_team <- 
 
 
 
